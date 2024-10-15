@@ -1,0 +1,237 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Device Tree Include file for Freescale Layerscape-1043A family SoC.
+ *
+ * Copyright 2014-2015 Freescale Semiconductor, Inc.
+ *
+ * Mingkai Hu <Mingkai.hu@freescale.com>
+ */
+
+/dts-v1/;
+#include "../hclink-ls1043a.dtsi"
+
+/ {
+	model = "LS1043A AG1002AT Board";
+
+	aliases {
+		crypto = &crypto;
+		serial0 = &duart0;
+		serial1 = &duart1;
+		serial2 = &duart2;
+		serial3 = &duart3;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+};
+
+&esdhc {
+	mmc-hs200-1_8v;
+	sd-uhs-sdr104;
+	sd-uhs-sdr50;
+	sd-uhs-sdr25;
+	sd-uhs-sdr12;
+};
+
+&i2c0 {
+	status = "okay";
+	rtc@32 {
+		compatible = "epson,rx8025";
+		reg = <0x32>;
+	};
+};
+
+&leds {
+	sys {
+		label = "sys";
+		gpios = <&gpio4 12 1>;
+		linux,default-trigger = "timer";
+	};
+
+	lte_0 {
+		label = "lte_0";
+		gpios = <&gpio1 30 1>;
+	};
+
+	lte_1 {
+		label = "lte_1";
+		gpios = <&gpio4 10 1>;
+	};
+
+	lte_2 {
+		label = "lte_2";
+		gpios = <&gpio4 11 1>;
+	};
+
+	cloud {
+		label = "cloud";
+		gpios = <&gpio4 13 1>;
+	};		
+
+	wifi {
+		label = "wifi";
+		gpios = <&gpio1 26 1>;
+	};				
+};
+
+&keys{
+	reset {
+		label = "reset";
+		gpios = <&gpio1 27 1>;
+		linux,code = <0x198>;
+	};
+};
+
+&ifc {
+	status = "disable";
+	#address-cells = <2>;
+	#size-cells = <1>;
+	/* NOR, NAND Flashes and FPGA on board */
+	ranges = <0x0 0x0 0x0 0x60000000 0x08000000
+		  0x1 0x0 0x0 0x7e800000 0x00010000
+		  0x2 0x0 0x0 0x7fb00000 0x00000100>;
+
+		nor@0,0 {
+			compatible = "cfi-flash";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			reg = <0x0 0x0 0x8000000>;
+			bank-width = <2>;
+			device-width = <1>;
+		};
+
+		nand@1,0 {
+			compatible = "fsl,ifc-nand";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			reg = <0x1 0x0 0x10000>;
+		};
+
+		cpld: board-control@2,0 {
+			compatible = "fsl,ls1043ardb-cpld";
+			reg = <0x2 0x0 0x0000100>;
+		};
+};
+
+&dspi0 {
+	bus-num = <0>;
+	status = "disabled";
+
+	flash@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "n25q128a13", "jedec,spi-nor";  /* 16MB */
+		reg = <0>;
+		spi-max-frequency = <1000000>; /* input clock */
+	};
+
+	slic@2 {
+		compatible = "maxim,ds26522";
+		reg = <2>;
+		spi-max-frequency = <2000000>;
+		fsl,spi-cs-sck-delay = <100>;
+		fsl,spi-sck-cs-delay = <50>;
+	};
+
+	slic@3 {
+		compatible = "maxim,ds26522";
+		reg = <3>;
+		spi-max-frequency = <2000000>;
+		fsl,spi-cs-sck-delay = <100>;
+		fsl,spi-sck-cs-delay = <50>;
+	};
+};
+
+&qspi {
+	status = "okay";
+	qflash0: mx25u12835f@0 {
+		compatible = "spansion,m25p80";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		spi-max-frequency = <20000000>;
+		m25p,fast-read;
+		reg = <0>;
+		spi-rx-bus-width = <1>;
+		spi-tx-bus-width = <1>;
+	};
+};
+
+&uqe {
+	ucc_hdlc: ucc@2000 {
+		compatible = "fsl,ucc-hdlc";
+		rx-clock-name = "clk8";
+		tx-clock-name = "clk9";
+		fsl,rx-sync-clock = "rsync_pin";
+		fsl,tx-sync-clock = "tsync_pin";
+		fsl,tx-timeslot-mask = <0xfffffffe>;
+		fsl,rx-timeslot-mask = <0xfffffffe>;
+		fsl,tdm-framer-type = "e1";
+		fsl,tdm-id = <0>;
+		fsl,siram-entry-id = <0>;
+		fsl,tdm-interface;
+	};
+};
+
+&duart0 {
+	status = "okay";
+};
+
+&duart1 {
+	status = "okay";
+};
+
+#include "../fsl-ls1043-post.dtsi"
+
+&fman0 {
+
+	ethernet@e2000 {
+		phy-handle = <&sgmii_phy1>;
+		phy-connection-type = "sgmii";
+	};
+
+	ethernet@e4000 {
+		phy-handle = <&rgmii_phy1>;
+		phy-connection-type = "rgmii";
+	};
+
+	ethernet@e6000 {
+		phy-handle = <&rgmii_phy2>;
+		phy-connection-type = "rgmii";
+	};
+
+	ethernet@e8000 {
+		phy-handle = <&sgmii_phy2>;
+		phy-connection-type = "sgmii";
+	};
+
+	ethernet@f0000 { 
+		phy-handle = <&sgmii_phy3>;
+		phy-connection-type = "sgmii";
+	};
+
+	mdio@fc000 {
+		rgmii_phy1: ethernet-phy@1 {
+			reg = <0x1>;
+		};
+
+		rgmii_phy2: ethernet-phy@3 {
+			reg = <0x3>;
+		};
+
+		sgmii_phy1: ethernet-phy@4 {
+			reg = <0x4>;
+			max-speed = <1000>;
+		};
+
+		sgmii_phy2: ethernet-phy@2 {
+			reg = <0x2>;
+			max-speed = <1000>;
+		};
+
+		sgmii_phy3: ethernet-phy@6 {
+			reg = <0x6>;
+			max-speed = <1000>;
+		};
+	};
+};

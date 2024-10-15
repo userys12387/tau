@@ -1,0 +1,142 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Device Tree file for Freescale LS1012A RDB Board.
+ *
+ * Copyright 2016 Freescale Semiconductor, Inc.
+ *
+ */
+/dts-v1/;
+
+#include "ag101a-ls1012a.dtsi"
+
+/ {
+	model = "huachentel AG101ASDM Board";
+	compatible = "fsl,ls1012a-rdb", "fsl,ls1012a";
+
+	aliases {
+		ethernet0 = &pfe_mac0;
+		ethernet1 = &pfe_mac1;
+	};
+};
+
+&leds {
+	sys {
+		label = "sys";
+		gpios = <&gpio0 27 1>;
+		linux,default-trigger = "timer";
+	};
+
+	lte_0 {
+		label = "lte_0";
+		gpios = <&gpio0 24 1>;
+	};
+
+	lte_1 {
+		label = "lte_1";
+		gpios = <&gpio0 29 1>;
+	};
+
+	lte_2 {
+		label = "lte_2";
+		gpios = <&gpio0 28 1>;
+	};
+
+	wifi {
+		label = "wifi";
+		gpios = <&gpio0 3 1>;
+	};		
+			
+	cloud {
+		label = "cloud";
+		gpios = <&gpio0 22 1>;
+	};	
+};
+
+&keys {
+	reset {
+		label = "reset";
+		gpios = <&gpio0 26 1>;
+		linux,code = <0x198>;
+	};
+};
+
+&pcie {
+	status = "okay";
+};
+
+&duart0 {
+	status = "okay";
+};
+
+&esdhc0 {
+	status = "okay";
+};
+
+&esdhc1 {
+	mmc-hs200-1_8v;
+	status = "okay";
+};
+
+&i2c0 {
+	status = "okay";
+};
+
+&sata {
+	status = "okay";
+};
+
+&pfe {
+	status = "okay";
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	ethernet@0 {
+		compatible = "fsl,pfe-gemac-port";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x0>;	/* GEM_ID */
+		fsl,gemac-bus-id = <0x0>;	/* BUS_ID */
+		fsl,gemac-phy-id = <0x2>;	/* PHY_ID */
+		fsl,mdio-mux-val = <0x0>;
+		phy-mode = "sgmii";
+		fsl,pfe-phy-if-flags = <0x0>;
+
+		mdio@0 {
+			reg = <0x1>; /* enabled/disabled */
+		};
+	};
+
+	ethernet@1 {
+		compatible = "fsl,pfe-gemac-port";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x1>;	/* GEM_ID */
+		fsl,gemac-bus-id = < 0x1 >;	/* BUS_ID */
+		fsl,gemac-phy-id = < 0x1 >;	/* PHY_ID */
+		fsl,mdio-mux-val = <0x0>;
+		phy-mode = "rgmii-txid";
+		fsl,pfe-phy-if-flags = <0x0>;
+		fixed-link{
+			speed = <1000>;
+			full-duplex;
+		};
+		mdio@0 {
+			reg = <0x0>; /* enabled/disabled */
+		};
+	};
+};
+
+&qspi {
+	status = "disable";
+	qflash0: s25fs512s@0 {
+		compatible = "spansion,m25p80";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		spi-max-frequency = <20000000>;
+		m25p,fast-read;
+		reg = <0>;
+		spi-rx-bus-width = <2>;
+		spi-tx-bus-width = <2>;
+	};
+
+};

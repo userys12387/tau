@@ -1,0 +1,44 @@
+
+menuconfig HUACHENLINK_DRIVER
+	bool "huachenlink Private Driver Support"	
+	help	  
+	  If unsure, say N.
+
+if HUACHENLINK_DRIVER
+
+config AG1002AE_FPGA
+	tristate "Huachenlink 1002ae fpga drivers"    
+    help 
+	  If unsure, say N.
+
+config AG1002AE_SC1161Y
+	tristate "Huachenlink spi SC1161Y drivers"    
+    help 
+	  If unsure, say N.
+
+config AG1002AD_IO
+	tristate "Huachenlink ag1002ad general drivers"    
+    help 
+	  If unsure, say N.  
+
+config AG102AO_IO
+	tristate "Huachenlink ag102ao general drivers"    
+    help 
+	  If unsure, say N. 
+
+config AG1002ADX_WDT
+	tristate "Huachenlink ag1002adx general drivers"    
+    help 
+	  If unsure, say N. 
+
+config LDTEA100_FPGA
+	tristate "Huachenlink ldtea fpga general drivers"    
+    help 
+	  If unsure, say N.
+
+config IOT5060
+	tristate "lora iot 5060 series drivers(kernel has already, use kernel module first)"    
+    help 
+	  I think it must be M. If unsure, say N. It has already in kernel.
+
+endif

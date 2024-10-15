@@ -1,0 +1,124 @@
+#
+# Huachen hcenDEV drivers
+#
+
+config HCDEV_GPIO_SYSFS
+	tristate "HCENDEV gpio leds"
+	select GPIO_SYSFS
+	select GPIO_MPC8XXX
+	select LEDS_USER
+	select LEDS_TRIGGER_TIMER
+	select LEDS_TRIGGER_ONESHOT
+	select LEDS_TRIGGER_GPIO
+	default y
+	help 
+	  HCENDEV gpio leds drivers
+
+config HCDEV_GPIO_LED
+	tristate "HCENDEV gpio leds"
+	depends on HCDEV_GPIO_SYSFS
+	default y
+	help 
+	  HCEN1004A gpio keys drivers
+
+config HCDEV_GPIO_KEY
+	tristate "HCENDEV gpio keys"
+	depends on HCDEV_GPIO_SYSFS
+	default y
+	help 
+	  HCEN1004A gpio keys drivers
+
+config HCENDEV_GPIO_I2C
+	tristate "HCENDEV gpio i2c "
+	select I2C
+	select I2C_ALGOBIT
+	select I2C_GPIO
+	depends on HCDEV_GPIO_SYSFS
+	help 
+	  HCENDEV gpio i2c drivers
+
+config HCENDEV_WIRELESS
+	tristate "HCENDEV wireless card"
+	select EXPERT
+	select CFG80211
+	select CFG80211_CERTIFICATION_ONUS
+	select CFG80211_CRDA_SUPPORT
+	select CFG80211_INTERNAL_REGDB
+	select CFG80211_REG_CELLULAR_HINTS
+	select CFG80211_REG_RELAX_NO_IR
+	select CFG80211_WEXT
+	select CFG80211_WEXT_EXPORT
+	select IPW2200
+	select MAC80211
+	select MAC80211_HAS_RC
+	select MAC80211_LEDS
+	select MAC80211_MESH	
+	select MAC80211_RC_DEFAULT_MINSTREL
+	select MAC80211_RC_MINSTREL
+	select MAC80211_RC_MINSTREL_HT
+	select MAC80211_RC_MINSTREL_VHT	
+	select NETDEVICES
+	select WLAN	 
+	select RFKILL
+	select WLAN_VENDOR_ATH 
+	select WLAN_VENDOR_INTEL
+	select IPW2100
+	help 
+		this is fuction support for wireless
+
+config HCENDEV_ATH9k_SERIES
+	tristate "HCENDEV ath9k support"
+	depends on HCENDEV_WIRELESS
+	select ATH9K
+	select ATH9K_AHB
+	select ATH9K_CHANNEL_CONTEXT
+	select ATH9K_COMMON
+	select ATH9K_DFS_CERTIFIED
+	select ATH9K_DYNACK
+	select ATH9K_HW
+	select ATH9K_HWRNG
+	select ATH9K_PCI
+	select ATH9K_RFKILL	
+	select ATH9K_DEBUGFS
+	help
+		HCENDEV support for ath9k series
+
+config HCENDEV_ATH10k_SERIES
+	tristate "HCENDEV ath10k support"
+	depends on HCENDEV_WIRELESS
+	select ATH10K
+	select ATH10K_AHB
+	select ATH10K_DFS_CERTIFIED
+	select ATH10K_PCI
+  help
+		HCENDEV support for QCA6174
+
+config HCENDEV_LTE
+	tristate "HCENDEV lte function enable"
+	select PPP
+	select PPP_BSDCOMP
+	select PPP_DEFLATE
+	select PPP_FILTER
+	select PPP_MPPE
+	select PPP_MULTILINK
+	select PPPOE
+	select PPP_ASYNC
+	select PPP_SYNC_TTY
+	select SLHC
+	select CRC_CCITT
+	select USB_ACM
+	select USB_SERIAL
+	select USB_SERIAL_WWAN
+	select USB_SERIAL_OPTION
+	select USB_NET_DRIVERS
+	select USB_USBNET
+	select USB_NET_CDCETHER
+	select USB_NET_CDC_EEM
+	select USB_NET_CDC_NCM
+	select USB_NET_CDC_SUBSET_ENABLE
+	select USB_NET_CDC_SUBSET
+	select USB_WDM
+	help 
+		HCENDEV support for LTE
+
+

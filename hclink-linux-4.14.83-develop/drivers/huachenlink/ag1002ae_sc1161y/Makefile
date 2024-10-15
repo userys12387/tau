@@ -1,0 +1,1 @@
+obj-$(CONFIG_AG1002AE_SC1161Y)		+= ag1002ae_sc1161y.o

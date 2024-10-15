@@ -1,0 +1,1 @@
+obj-$(CONFIG_AG1002ADX_WDT)		+= ag1002adx_wdt.o
